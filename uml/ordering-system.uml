@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="213.0" y="33.0">com.diamante.orderingsystem.entity.Customer</node>
+    <node x="0.0" y="0.0">com.diamante.orderingsystem.entity.Product</node>
+    <node x="104.75" y="233.0">com.diamante.orderingsystem.entity.Order</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.diamante.orderingsystem.entity.Order" target="com.diamante.orderingsystem.entity.Product">
+      <point x="-53.25" y="-69.5" />
+      <point x="158.0" y="208.0" />
+      <point x="96.5" y="208.0" />
+      <point x="0.0" y="91.5" />
+    </edge>
+    <edge source="com.diamante.orderingsystem.entity.Order" target="com.diamante.orderingsystem.entity.Customer">
+      <point x="53.25" y="-69.5" />
+      <point x="264.5" y="208.0" />
+      <point x="326.0" y="208.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8" x="58.5" y="347.0" />
+  <SelectedNodes>
+    <node>com.diamante.orderingsystem.entity.Customer</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

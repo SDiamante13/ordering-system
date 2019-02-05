@@ -3,6 +3,8 @@ package com.diamante.orderingsystem.repository;
 import com.diamante.orderingsystem.entity.Customer;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
-    Customer findCustomerByName(String name);
+    Optional<Customer> findByLastName(String lastName);
 }

@@ -1,24 +1,24 @@
 package com.diamante.orderingsystem.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "CUSTOMERS")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    private String name;
-
-    public Customer(String name) {
-        this.name = name;
-    }
+    private Long customerId;
+    private String firstName;
+    private String lastName;
+    @Embedded
+    private PaymentInfo paymentInfo;
 }
