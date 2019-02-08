@@ -1,0 +1,9 @@
+# .pairs - configuration for 'git pair'
+pairs:
+  # <initials>: <Firstname> <Lastname>[; <email-id>]
+  sd: Steven Diamante
+  cm: Chintu Maddineni
+email_addresses:
+  sd: stevendiamante13@gmail.com
+  cm: srikarkc@gmail.com
+global: false  # Set to true for git-pair to change git configuration for all your projects
