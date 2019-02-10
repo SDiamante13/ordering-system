@@ -4,9 +4,10 @@ import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +28,37 @@ public class CustomerController {
     public List<Customer> getAllCustomers() {
         return customerService.findAllCustomers();
     }
+
+    @ApiOperation(value = "Retrieves customer by last name")
+    @GetMapping("/{lastName}")
+    public Customer getCustomerByLastName(@PathVariable("lastName") String lastName) {
+        Customer customer = customerService.findByLastName(lastName);
+        if (customer == null) {
+            // TODO once controller advice with exception handling is implemented change to CustomerNotFoundException
+            throw new RuntimeException("Customer not found.");
+        }
+        return customerService.findByLastName(lastName);
+    }
+
+    @ApiOperation(value = "Creates a new customer")
+    @PostMapping
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer){
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.saveCustomer(customer));
+    }
+
+    @ApiOperation(value = "Updates the customer given correct id")
+    @PutMapping
+    public Customer updateCustomer(@RequestBody Customer customer){
+        return customerService.updateCustomer(customer);
+    }
+
+    @ApiOperation(value = "Deletes the customer given an id")
+    @ApiResponse(code = 204, message = "Customer deleted, no content.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id){
+        customerService.deleteCustomerById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
