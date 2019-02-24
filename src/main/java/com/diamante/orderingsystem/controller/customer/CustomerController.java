@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,8 +34,7 @@ public class CustomerController {
     public Customer getCustomerByLastName(@PathVariable("lastName") String lastName) {
         Customer customer = customerService.findByLastName(lastName);
         if (customer == null) {
-            // TODO once controller advice with exception handling is implemented change to CustomerNotFoundException
-            throw new RuntimeException("Customer not found.");
+            throw new CustomerNotFoundException("Customer with last name, " + lastName + " not found.");
         }
         return customer;
     }
@@ -42,13 +42,13 @@ public class CustomerController {
     @ApiOperation(value = "Creates a new customer")
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer customer){
+    public Customer createCustomer(@Valid @RequestBody Customer customer){
         return customerService.saveCustomer(customer);
     }
 
     @ApiOperation(value = "Updates the customer given correct id")
     @PutMapping
-    public Customer updateCustomer(@RequestBody Customer customer){
+    public Customer updateCustomer(@Valid @RequestBody Customer customer){
         return customerService.updateCustomer(customer);
     }
 
