@@ -11,4 +11,5 @@ public interface CustomerService {
     Customer findByLastName(String name);
     Customer updateCustomer(Customer updatedCustomer);
     void deleteCustomerById(Long id);
+    void deleteAllCustomers();
 }

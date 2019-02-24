@@ -6,7 +6,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,13 +36,14 @@ public class CustomerController {
             // TODO once controller advice with exception handling is implemented change to CustomerNotFoundException
             throw new RuntimeException("Customer not found.");
         }
-        return customerService.findByLastName(lastName);
+        return customer;
     }
 
     @ApiOperation(value = "Creates a new customer")
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer){
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.saveCustomer(customer));
+    public Customer createCustomer(@RequestBody Customer customer){
+        return customerService.saveCustomer(customer);
     }
 
     @ApiOperation(value = "Updates the customer given correct id")
@@ -54,10 +54,10 @@ public class CustomerController {
 
     @ApiOperation(value = "Deletes the customer given an id")
     @ApiResponse(code = 204, message = "Customer deleted, no content.")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id){
+    public void deleteCustomer(@PathVariable("id") Long id){
         customerService.deleteCustomerById(id);
-        return ResponseEntity.noContent().build();
     }
 
 
