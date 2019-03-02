@@ -84,7 +84,7 @@ public class CustomerControllerIntegrationTest {
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message",is("customer with last name, Srikar not found.")));
+                .andExpect(jsonPath("$.message",is("Customer with last name Srikar not found.")));
     }
 
     @Test

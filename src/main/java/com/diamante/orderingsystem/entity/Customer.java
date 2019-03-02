@@ -20,10 +20,10 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
 
-    @NotNull
+    @NotNull(message = "First name is a required field")
     private String firstName;
 
-    @NotNull
+    @NotNull(message = "Last name is a required field")
     private String lastName;
 
     @Embedded
