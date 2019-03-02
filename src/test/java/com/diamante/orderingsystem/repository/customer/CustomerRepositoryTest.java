@@ -2,6 +2,7 @@ package com.diamante.orderingsystem.repository.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerRepositoryTest {
 
 
@@ -43,6 +43,8 @@ public class CustomerRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
+        customerRepository.resetAllCustomerIds();
+
         customer1 = Customer.builder()
                 .firstName("Paul")
                 .lastName("Ryan")
@@ -62,6 +64,11 @@ public class CustomerRepositoryTest {
         testEntityManager.persist(customer1);
         testEntityManager.persist(customer2);
         testEntityManager.persist(customer3);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        customerRepository.deleteAll();
     }
 
     @Test
