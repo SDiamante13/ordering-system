@@ -104,7 +104,64 @@ public class CustomerControllerIntegrationTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    public void updateCustomerForNonExistentId_returnsErrorMessage() throws Exception {
+        Customer customerWithWrongId = Customer.builder()
+                .customerId(8L)
+                .firstName("Tom")
+                .lastName("Green")
+                .paymentInfo(PaymentInfo.builder()
+                        .cardNumber("4372762")
+                        .expirationDate("7/12")
+                        .securityCode("345")
+                        .zipCode("87262")
+                        .build())
+                .build();
+
+        mockMvc.perform(put("/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(customerWithWrongId)))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", is("Customer with id 8 was not found.")));
+    }
+
+    @Test
+    public void deleteCustomer_returnsDataRetrievalFailureErrorMessage_whenThereIsNoCustomerToDelete() throws Exception {
+        mockMvc.perform(delete("/customer/9"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("There is no customer with id 9 in the database")));
+    }
+
+    @Test
+    public void updateCustomerReturnsValidationErrorMessage_whenSecurityCodeDoesNotContain3Digits() throws Exception {
+        Customer incorrectCustomer = Customer.builder()
+                .customerId(2L)
+                .firstName("Shiela")
+                .lastName("Johnson")
+                .paymentInfo(PaymentInfo.builder()
+                        .cardNumber("4372762")
+                        .expirationDate("7/12")
+                        .securityCode("13")
+                        .zipCode("87262")
+                        .build())
+                .build();
+
+        mockMvc.perform(put("/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(incorrectCustomer)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message",
+                        is("The field paymentInfo.securityCode with value 13 does not meet requirements. " +
+                                "Your security code must be exactly 3 digits.")));
+    }
+
     private void addCustomersToDatabase() {
+        customerService.resetAllCustomerIds();
+
         Customer customer1 = Customer.builder()
                 .customerId(1L)
                 .firstName("Tom")

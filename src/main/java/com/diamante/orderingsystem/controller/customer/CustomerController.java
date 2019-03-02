@@ -57,6 +57,10 @@ public class CustomerController {
     @ApiOperation(value = "Updates the customer given correct id")
     @PutMapping
     public Customer updateCustomer(@Valid @RequestBody Customer customer, BindingResult result) {
+        if (result.hasErrors()) {
+            createErrorMessageAndThrowEntityValidationException(result);
+        }
+
         Customer updatedCustomer;
 
         try {
@@ -67,10 +71,6 @@ public class CustomerController {
 
         if (updatedCustomer == null) {
             throw new CustomerNotFoundException("Customer with id " + customer.getCustomerId() + " was not found.");
-        }
-
-        if (result.hasErrors()) {
-            createErrorMessageAndThrowEntityValidationException(result);
         }
 
         return updatedCustomer;

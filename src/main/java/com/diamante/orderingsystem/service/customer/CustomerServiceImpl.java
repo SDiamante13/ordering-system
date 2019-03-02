@@ -64,4 +64,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteAllCustomers() {
         customerRepository.deleteAll();
     }
+
+    @Override
+    public void resetAllCustomerIds() {
+        customerRepository.resetAllCustomerIds();
+    }
 }

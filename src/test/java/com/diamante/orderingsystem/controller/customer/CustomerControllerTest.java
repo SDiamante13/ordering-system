@@ -286,14 +286,13 @@ public class CustomerControllerTest {
     public void updateCustomerReturnsTransactionSystemException_dueToDatabaseTransactionIssue() throws Exception {
 
         Customer customerToBeUpdated = Customer.builder()
-                .customerId(1L)
                 .firstName("Frank")
                 .lastName("Jones")
                 .paymentInfo(PaymentInfo.builder()
                         .cardNumber("3782721")
                         .expirationDate("3/22")
-                        .securityCode("51")
-                        .zipCode("1263")
+                        .securityCode("515")
+                        .zipCode("12639")
                         .build())
                 .build();
 
