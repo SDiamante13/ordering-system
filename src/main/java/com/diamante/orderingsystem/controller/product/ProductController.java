@@ -1,6 +1,6 @@
 //package com.diamante.orderingsystem.controller.product;
 //
-//import com.diamante.orderingsystem.entity.Product;
+//import com.diamante.orderingsystem.entity.product;
 //import com.diamante.orderingsystem.service.product.ProductService;
 //import org.springframework.http.MediaType;
 //import org.springframework.web.bind.annotation.*;
@@ -21,13 +21,13 @@
 //    }
 //
 //    @GetMapping
-//    public List<Product> getAllProducts() {
+//    public List<product> getAllProducts() {
 //        return productService.findAllProducts();
 //    }
 //
 //    @GetMapping("/{id}")
-//    public Product getProductById(@PathVariable("id") Long id){
-//        Product product = productService.findByProductId(id);
+//    public product getProductById(@PathVariable("id") Long id){
+//        product product = productService.findByProductId(id);
 //        return product;
 //    }
 //
@@ -37,7 +37,7 @@
 ////    }
 //
 //    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public Product createProduct(@Valid @RequestBody Product product) {
+//    public product createProduct(@Valid @RequestBody product product) {
 //        return productService.saveProduct(product);
 //    }
 //

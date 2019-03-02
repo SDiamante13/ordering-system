@@ -1,8 +1,8 @@
-package com.diamante.orderingsystem.service;
+package com.diamante.orderingsystem.service.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
-import com.diamante.orderingsystem.repository.CustomerRepository;
+import com.diamante.orderingsystem.repository.customer.CustomerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

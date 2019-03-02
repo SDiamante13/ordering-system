@@ -46,5 +46,4 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.I_AM_A_TEAPOT);
     }
-
 }

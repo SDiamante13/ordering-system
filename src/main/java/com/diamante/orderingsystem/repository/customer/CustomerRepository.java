@@ -1,4 +1,4 @@
-package com.diamante.orderingsystem.repository;
+package com.diamante.orderingsystem.repository.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
 import org.springframework.data.repository.CrudRepository;

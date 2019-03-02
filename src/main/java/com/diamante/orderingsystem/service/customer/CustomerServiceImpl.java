@@ -1,7 +1,7 @@
-package com.diamante.orderingsystem.service;
+package com.diamante.orderingsystem.service.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
-import com.diamante.orderingsystem.repository.CustomerRepository;
+import com.diamante.orderingsystem.repository.customer.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

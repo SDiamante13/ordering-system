@@ -1,12 +1,9 @@
-package com.diamante.orderingsystem.integration;
+package com.diamante.orderingsystem.integration.customer;
 
 import com.diamante.orderingsystem.OrderingSystemApplication;
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.diamante.orderingsystem.entity.Customer;
-import com.diamante.orderingsystem.entity.PaymentInfo;
-import com.diamante.orderingsystem.service.CustomerService;
+import com.diamante.orderingsystem.service.customer.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;

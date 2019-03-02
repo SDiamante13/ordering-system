@@ -2,7 +2,7 @@ package com.diamante.orderingsystem.bootstrap;
 
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
-import com.diamante.orderingsystem.service.CustomerService;
+import com.diamante.orderingsystem.service.customer.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -59,7 +59,7 @@ public class InitialDataLoader implements CommandLineRunner {
 
         log.info("********Loading products into database*************");
 //
-//        productService.saveProduct(Product.builder()
+//        productService.saveProduct(product.builder()
 //                .productName("Harry Potter")
 //                .description("A Book about harry potter tales.")
 //                .manufacturer("J.K Rowlings")
@@ -68,7 +68,7 @@ public class InitialDataLoader implements CommandLineRunner {
 //                .category(Category.BOOKS)
 //                .build());
 //
-//        productService.saveProduct(Product.builder()
+//        productService.saveProduct(product.builder()
 //                .productName("Samsung")
 //                .description("Samsung")
 //                .manufacturer("J.K Rowlings")

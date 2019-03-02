@@ -1,7 +1,7 @@
-package com.diamante.orderingsystem.controller;
+package com.diamante.orderingsystem.controller.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
-import com.diamante.orderingsystem.service.CustomerService;
+import com.diamante.orderingsystem.service.customer.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
-@Api(value = "Customer and Payment API", description = "Store new customers and retrieve customer info of existing customers.")
+@Api(value = "customer and Payment API", description = "Store new customers and retrieve customer info of existing customers.")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -36,7 +36,7 @@ public class CustomerController {
     public Customer getCustomerByLastName(@PathVariable("lastName") String lastName) {
         Customer customer = customerService.findByLastName(lastName);
         if (customer == null) {
-            throw new CustomerNotFoundException("Customer with last name, " + lastName + " not found.");
+            throw new CustomerNotFoundException("customer with last name, " + lastName + " not found.");
         }
         return customer;
     }
@@ -60,13 +60,13 @@ public class CustomerController {
         Customer updatedCustomer = customerService.updateCustomer(customer);
 
         if (updatedCustomer == null) {
-            throw new CustomerNotFoundException("Customer with id: " + customer.getCustomerId() + " not found.");
+            throw new CustomerNotFoundException("customer with id: " + customer.getCustomerId() + " not found.");
         }
         return updatedCustomer;
     }
 
     @ApiOperation(value = "Deletes the customer given an id")
-    @ApiResponse(code = 204, message = "Customer deleted, no content.")
+    @ApiResponse(code = 204, message = "customer deleted, no content.")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteCustomer(@PathVariable("id") Long id) {
@@ -76,6 +76,4 @@ public class CustomerController {
             throw new DataRetrievalFailureException("There is no customer with id " + id + " in the database");
         }
     }
-
-
 }
