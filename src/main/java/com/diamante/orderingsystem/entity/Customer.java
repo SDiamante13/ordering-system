@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
@@ -15,10 +17,16 @@ import javax.persistence.*;
 @Table(name = "CUSTOMERS")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
+
+    @NotNull
     private String firstName;
+
+    @NotNull
     private String lastName;
+
     @Embedded
+    @Valid
     private PaymentInfo paymentInfo;
 }

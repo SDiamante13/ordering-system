@@ -1,8 +1,8 @@
-package com.diamante.orderingsystem.controller;
+package com.diamante.orderingsystem.controller.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
-import com.diamante.orderingsystem.service.CustomerService;
+import com.diamante.orderingsystem.service.customer.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,6 @@ public class CustomerControllerTest {
     @Before
     public void setUp() throws Exception {
         JacksonTester.initFields(this, new ObjectMapper());
-
     }
 
     @Test
@@ -82,14 +81,13 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.firstName",is(customer1.getFirstName())));
     }
 
-    @Test(expected = RuntimeException.class) //FIXME expect CustomerNotFoundException
+    @Test
     public void getCustomerByLastName_returns404ForNotFoundCustomer() throws Exception {
         when(customerService.findByLastName(anyString())).thenReturn(null);
-
         mockMvc.perform(get("/customer/Thomas")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message",is("customer with last name, Thomas not found.")));    }
 
     @Test
     public void createCustomer_returns201ForProperInputs() throws Exception {

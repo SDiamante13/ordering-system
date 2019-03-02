@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Profile("test")
 @Slf4j
 public class InitialDataLoader implements CommandLineRunner {
+//    Steps to load Customers
     private final CustomerService customerService;
 
     public InitialDataLoader(CustomerService customerService) {
@@ -54,5 +55,26 @@ public class InitialDataLoader implements CommandLineRunner {
                         .zipCode("30276")
                         .build())
                 .build());
+
+
+        log.info("********Loading products into database*************");
+//
+//        productService.saveProduct(Product.builder()
+//                .productName("Harry Potter")
+//                .description("A Book about harry potter tales.")
+//                .manufacturer("J.K Rowlings")
+//                .price(34.56)
+//                .quantity(1)
+//                .category(Category.BOOKS)
+//                .build());
+//
+//        productService.saveProduct(Product.builder()
+//                .productName("Samsung")
+//                .description("Samsung")
+//                .manufacturer("J.K Rowlings")
+//                .price(34.56)
+//                .quantity(1)
+//                .category(Category.BOOKS)
+//                .build());
     }
 }

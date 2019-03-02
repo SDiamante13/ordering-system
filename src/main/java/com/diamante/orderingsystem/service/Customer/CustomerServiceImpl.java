@@ -43,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer updateCustomer(Customer updatedCustomer) {
         Optional<Customer> originalCustomer = customerRepository.findById(updatedCustomer.getCustomerId());
 
-        if (!originalCustomer.isPresent()){
+        if (!originalCustomer.isPresent()) {
             return null;
         }
 

@@ -5,7 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -18,8 +19,10 @@ public class PaymentInfo {
 
     private String expirationDate;
 
+    @Size(min= 3, max = 3, message = "Your security code must be exactly 3 digits.")
     private String securityCode;
 
+    @Size(min= 5, max = 5, message = "Your zip code must be exactly 5 digits.")
     private String zipCode;
 
 }

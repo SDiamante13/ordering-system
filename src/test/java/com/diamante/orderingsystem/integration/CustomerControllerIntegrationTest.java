@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -84,7 +85,9 @@ public class CustomerControllerIntegrationTest {
     public void getCustomerByLastName_returns404NotFoundCustomer() throws Exception {
         mockMvc.perform(get("/customer/{lastName}", "Srikar"))
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andDo(print()).andExpect(status().isNotFound());
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message",is("customer with last name, Srikar not found.")));
     }
 
     @Test

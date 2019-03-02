@@ -1,4 +1,4 @@
-package com.diamante.orderingsystem.service;
+package com.diamante.orderingsystem.service.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
 

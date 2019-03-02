@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.io.Serializable;
 
 @Data
 @Builder
@@ -14,9 +14,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
-public class Product {
+public class Product implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
     private String productName;
@@ -24,6 +25,9 @@ public class Product {
     private String description;
 
     private String manufacturer;
+
+    @Lob
+    private byte[] productImage;
 
     @Enumerated(EnumType.STRING)
     private Category category;
