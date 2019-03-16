@@ -2,6 +2,7 @@ buildscript {
 	ext {
 		springBootVersion = '2.1.2.RELEASE'
 		swaggerVersion = '2.6.1'
+		postgresVersion = '42.2.5'
 	}
 	repositories {
 		mavenCentral()
@@ -29,7 +30,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "io.springfox:springfox-swagger2:$swaggerVersion"
 	implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
-	runtimeOnly 'com.h2database:h2'
+	implementation "org.postgresql:postgresql:$postgresVersion"
 	compileOnly 'org.projectlombok:lombok'
+	testImplementation 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

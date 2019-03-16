@@ -13,6 +13,8 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "ALTER TABLE CUSTOMERS ALTER COLUMN CUSTOMER_ID RESTART WITH 1", nativeQuery = true)
+    @Query(value = "ALTER SEQUENCE customers_customer_id_seq RESTART WITH 1", nativeQuery = true)
     void resetAllCustomerIds();
+
+    // TODO ALTER TABLE CUSTOMERS ALTER COLUMN CUSTOMER_ID RESTART WITH 1 for H2 Database
 }

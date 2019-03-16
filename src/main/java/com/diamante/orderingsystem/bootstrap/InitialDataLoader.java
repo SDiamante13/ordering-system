@@ -23,6 +23,9 @@ public class InitialDataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("*************Loading customers into database*************");
 
+        customerService.deleteAllCustomers();
+        customerService.resetAllCustomerIds();
+
         customerService.saveCustomer(Customer.builder()
                 .firstName("Tom")
                 .lastName("Green")
