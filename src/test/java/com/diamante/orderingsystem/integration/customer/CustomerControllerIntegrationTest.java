@@ -1,6 +1,7 @@
 package com.diamante.orderingsystem.integration.customer;
 
 import com.diamante.orderingsystem.OrderingSystemApplication;
+import com.diamante.orderingsystem.TestDatabaseSetup;
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
 import com.diamante.orderingsystem.service.customer.CustomerService;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OrderingSystemApplication.class)
 @ActiveProfiles("default")
-public class CustomerControllerIntegrationTest {
+public class CustomerControllerIntegrationTest extends TestDatabaseSetup {
 
     @Autowired
     WebApplicationContext webApplicationContext;
@@ -84,7 +85,7 @@ public class CustomerControllerIntegrationTest {
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message",is("Customer with last name Srikar not found.")));
+                .andExpect(jsonPath("$.message", is("Customer with last name Srikar not found.")));
     }
 
     @Test

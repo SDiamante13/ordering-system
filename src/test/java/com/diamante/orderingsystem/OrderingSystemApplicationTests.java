@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OrderingSystemApplicationTests {
+public class OrderingSystemApplicationTests extends TestDatabaseSetup {
 
 	@Test
 	public void contextLoads() {

@@ -1,5 +1,6 @@
 package com.diamante.orderingsystem.repository.customer;
 
+import com.diamante.orderingsystem.TestDatabaseSetup;
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
 import org.junit.After;
@@ -7,9 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -19,9 +21,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("default")
 @DataJpaTest
-public class CustomerRepositoryTest {
-
+public class CustomerRepositoryTest extends TestDatabaseSetup {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -43,27 +46,7 @@ public class CustomerRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        customerRepository.resetAllCustomerIds();
-
-        customer1 = Customer.builder()
-                .firstName("Paul")
-                .lastName("Ryan")
-                .paymentInfo(paymentInfo)
-                .build();
-        customer2 = Customer.builder()
-                .firstName("Jim")
-                .lastName("Jefferies")
-                .paymentInfo(paymentInfo)
-                .build();
-        customer3 = Customer.builder()
-                .firstName("Chintu")
-                .lastName("Maddineni")
-                .paymentInfo(paymentInfo)
-                .build();
-
-        testEntityManager.persist(customer1);
-        testEntityManager.persist(customer2);
-        testEntityManager.persist(customer3);
+        storeCustomersInDatabase();
     }
 
     @After
@@ -97,7 +80,7 @@ public class CustomerRepositoryTest {
 
     @Test
     public void findAll_returnListOfThreeCustomers() {
-        List<Customer> expectedCustomerList = Arrays.asList(customer1,customer2,customer3);
+        List<Customer> expectedCustomerList = Arrays.asList(customer1, customer2, customer3);
         List<Customer> actualCustomerList = (List<Customer>) customerRepository.findAll();
         assertThat(actualCustomerList.size()).isEqualTo(3);
         assertThat(actualCustomerList.get(0)).isEqualToComparingFieldByField(expectedCustomerList.get(0));
@@ -115,5 +98,29 @@ public class CustomerRepositoryTest {
         customerRepository.deleteById(2L);
         foundCustomer = customerRepository.findById(2L);
         assertThat(foundCustomer.isPresent()).isFalse();
+    }
+
+    private void storeCustomersInDatabase() {
+        customerRepository.resetAllCustomerIds();
+
+        customer1 = Customer.builder()
+                .firstName("Paul")
+                .lastName("Ryan")
+                .paymentInfo(paymentInfo)
+                .build();
+        customer2 = Customer.builder()
+                .firstName("Jim")
+                .lastName("Jefferies")
+                .paymentInfo(paymentInfo)
+                .build();
+        customer3 = Customer.builder()
+                .firstName("Chintu")
+                .lastName("Maddineni")
+                .paymentInfo(paymentInfo)
+                .build();
+
+        testEntityManager.persist(customer1);
+        testEntityManager.persist(customer2);
+        testEntityManager.persist(customer3);
     }
 }
