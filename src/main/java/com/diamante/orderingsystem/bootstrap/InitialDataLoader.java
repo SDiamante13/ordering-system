@@ -1,8 +1,11 @@
 package com.diamante.orderingsystem.bootstrap;
 
+import com.diamante.orderingsystem.entity.Category;
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
+import com.diamante.orderingsystem.entity.Product;
 import com.diamante.orderingsystem.service.customer.CustomerService;
+import com.diamante.orderingsystem.service.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -12,11 +15,13 @@ import org.springframework.stereotype.Component;
 @Profile("test")
 @Slf4j
 public class InitialDataLoader implements CommandLineRunner {
-//    Steps to load Customers
-    private final CustomerService customerService;
 
-    public InitialDataLoader(CustomerService customerService) {
+    private final CustomerService customerService;
+    private final ProductService productService;
+
+    public InitialDataLoader(CustomerService customerService, ProductService productService) {
         this.customerService = customerService;
+        this.productService = productService;
     }
 
     @Override
@@ -25,7 +30,43 @@ public class InitialDataLoader implements CommandLineRunner {
 
         customerService.deleteAllCustomers();
         customerService.resetAllCustomerIds();
+        saveCustomers();
 
+        log.info("********Loading products into database*************");
+
+        productService.deleteAllProducts();
+        productService.resetAllProductIds();
+        saveProducts();
+    }
+
+    private void saveProducts() {
+        productService.saveProduct(Product.builder()
+                .productName("Flat Screen TV")
+                .description("OLED High Definition TV")
+                .manufacturer("Samsung")
+                .category(Category.ELECTRONICS)
+                .price(599.99)
+                .build());
+
+        productService.saveProduct(Product.builder()
+                .productName("Men's Black Watch")
+                .description("A black watch")
+                .manufacturer("IZOD")
+                .category(Category.CLOTHING_SHOES_JEWELERY_WATCHES)
+                .price(45.79)
+                .build());
+
+        productService.saveProduct(Product.builder()
+                .productName("Harry Potter")
+                .description("A Book about harry potter tales.")
+                .manufacturer("J.K Rowlings")
+                .price(34.56)
+                .quantity(1)
+                .category(Category.BOOKS)
+                .build());
+    }
+
+    private void saveCustomers() {
         customerService.saveCustomer(Customer.builder()
                 .firstName("Tom")
                 .lastName("Green")
@@ -58,26 +99,5 @@ public class InitialDataLoader implements CommandLineRunner {
                         .zipCode("30276")
                         .build())
                 .build());
-
-
-        log.info("********Loading products into database*************");
-//
-//        productService.saveProduct(product.builder()
-//                .productName("Harry Potter")
-//                .description("A Book about harry potter tales.")
-//                .manufacturer("J.K Rowlings")
-//                .price(34.56)
-//                .quantity(1)
-//                .category(Category.BOOKS)
-//                .build());
-//
-//        productService.saveProduct(product.builder()
-//                .productName("Samsung")
-//                .description("Samsung")
-//                .manufacturer("J.K Rowlings")
-//                .price(34.56)
-//                .quantity(1)
-//                .category(Category.BOOKS)
-//                .build());
     }
 }

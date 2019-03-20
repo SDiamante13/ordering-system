@@ -4,6 +4,7 @@ import com.diamante.orderingsystem.TestDatabaseSetup;
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.PaymentInfo;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +53,11 @@ public class CustomerRepositoryTest extends TestDatabaseSetup {
     @After
     public void tearDown() throws Exception {
         customerRepository.deleteAll();
+    }
+
+    @AfterClass
+    public static void closeTestContainer() throws Exception {
+        postgreSQLContainer.close();
     }
 
     @Test

@@ -7,6 +7,7 @@ import com.diamante.orderingsystem.entity.PaymentInfo;
 import com.diamante.orderingsystem.service.customer.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +58,11 @@ public class CustomerControllerIntegrationTest extends TestDatabaseSetup {
     @After
     public void tearDown() throws Exception {
         customerService.deleteAllCustomers();
+    }
+
+    @AfterClass
+    public static void closeTestContainer() throws Exception {
+        postgreSQLContainer.close();
     }
 
     @Test
