@@ -161,7 +161,7 @@ public class CustomerControllerTest {
         doThrow(EmptyResultDataAccessException.class).when(customerService).deleteCustomerById(9L);
 
         mockMvc.perform(delete("/customer/9"))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("There is no customer with id 9 in the database")));
     }
 

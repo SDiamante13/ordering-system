@@ -1,4 +1,4 @@
-package com.diamante.orderingsystem.controller.customer;
+package com.diamante.orderingsystem.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

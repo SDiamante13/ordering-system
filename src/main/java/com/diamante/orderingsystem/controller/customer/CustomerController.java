@@ -1,6 +1,5 @@
 package com.diamante.orderingsystem.controller.customer;
 
-import com.diamante.orderingsystem.controller.EntityValidationException;
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.service.customer.CustomerService;
 import io.swagger.annotations.Api;
@@ -10,11 +9,12 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.diamante.orderingsystem.utils.ExceptionUtils.createErrorMessageAndThrowEntityValidationException;
 
 @RestController
 @RequestMapping("/customer")
@@ -86,12 +86,5 @@ public class CustomerController {
         } catch (DataRetrievalFailureException ex) {
             throw new DataRetrievalFailureException("There is no customer with id " + id + " in the database");
         }
-    }
-
-    private void createErrorMessageAndThrowEntityValidationException(BindingResult result) {
-        FieldError fieldError = result.getFieldErrors().get(0);
-        String errorMessage = "The field " + fieldError.getField() +
-                " with value " + fieldError.getRejectedValue() + " does not meet requirements. ";
-        throw new EntityValidationException(errorMessage + fieldError.getDefaultMessage());
     }
 }
