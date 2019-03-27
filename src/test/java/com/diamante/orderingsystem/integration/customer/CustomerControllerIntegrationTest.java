@@ -7,7 +7,6 @@ import com.diamante.orderingsystem.entity.PaymentInfo;
 import com.diamante.orderingsystem.service.customer.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,11 +57,6 @@ public class CustomerControllerIntegrationTest extends TestDatabaseSetup {
     @After
     public void tearDown() throws Exception {
         customerService.deleteAllCustomers();
-    }
-
-    @AfterClass
-    public static void closeTestContainer() throws Exception {
-        postgreSQLContainer.close();
     }
 
     @Test
@@ -137,7 +131,7 @@ public class CustomerControllerIntegrationTest extends TestDatabaseSetup {
     @Test
     public void deleteCustomer_returnsDataRetrievalFailureErrorMessage_whenThereIsNoCustomerToDelete() throws Exception {
         mockMvc.perform(delete("/customer/9"))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("There is no customer with id 9 in the database")));
     }
 

@@ -4,7 +4,6 @@ import com.diamante.orderingsystem.TestDatabaseSetup;
 import com.diamante.orderingsystem.entity.Category;
 import com.diamante.orderingsystem.entity.Product;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 public class ProductRepositoryTest extends TestDatabaseSetup {
 
-    // FIXME: Failing tests for ./gradlew clean test
-
     @Autowired
     private ProductRepository productRepository;
 
@@ -52,11 +49,6 @@ public class ProductRepositoryTest extends TestDatabaseSetup {
     @After
     public void tearDown() throws Exception {
         productRepository.deleteAll();
-    }
-
-    @AfterClass
-    public static void closeTestContainer() throws Exception {
-        postgreSQLContainer.close();
     }
 
     @Test

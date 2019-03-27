@@ -16,6 +16,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static com.diamante.orderingsystem.utils.ExceptionUtils.createErrorMessageAndThrowEntityValidationException;
+import static com.diamante.orderingsystem.utils.QueryParamUtils.isSingleParam;
+import static com.diamante.orderingsystem.utils.QueryParamUtils.splitParamByRegexAndCombine;
 
 @RestController
 @RequestMapping("/product")
@@ -43,13 +45,14 @@ public class ProductController {
 
     @ApiOperation(value = "View product by searching using the product id or name", notes = "Must use request parameters: `id` or `name`.")
     @GetMapping()
-    public Product getProductByIdOrName(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) throws NoSuchMethodException {
+    public Product getProductByIdOrName(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) throws Exception {
         if (id != null) {
             return productService.findByProductId(id);
         } else if (name != null) {
-            return productService.findProductByName(name);
+            if (isSingleParam(name, "%")) return productService.findProductByName(name);
+            else return productService.findProductByName(splitParamByRegexAndCombine(name, "%"));
         } else {
-            throw new NoSuchMethodException("Unable to process request. ");
+            throw new NoSuchMethodException("Unable to process request.");
         }
     }
 
@@ -102,7 +105,6 @@ public class ProductController {
             throw new DataRetrievalFailureException("There is no product with id " + id + " in the database");
         }
     }
-
 }
 
 
