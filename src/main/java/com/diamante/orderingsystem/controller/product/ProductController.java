@@ -16,8 +16,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static com.diamante.orderingsystem.utils.ExceptionUtils.createErrorMessageAndThrowEntityValidationException;
-import static com.diamante.orderingsystem.utils.QueryParamUtils.isSingleParam;
-import static com.diamante.orderingsystem.utils.QueryParamUtils.splitParamByRegexAndCombine;
 
 @RestController
 @RequestMapping("/product")
@@ -49,8 +47,7 @@ public class ProductController {
         if (id != null) {
             return productService.findByProductId(id);
         } else if (name != null) {
-            if (isSingleParam(name, "%")) return productService.findProductByName(name);
-            else return productService.findProductByName(splitParamByRegexAndCombine(name, "%"));
+            return productService.findProductByName(name);
         } else {
             throw new NoSuchMethodException("Unable to process request.");
         }
@@ -106,22 +103,3 @@ public class ProductController {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -100,7 +100,7 @@ public class ProductControllerIntegrationTest extends TestDatabaseSetup {
 
     @Test
     public void getProduct_withParameterNameWithMultipleWords_returnsCorrectProduct() throws Exception {
-        mockMvc.perform(get("/product?name=Men's%Black%Watch"))
+        mockMvc.perform(get("/product?name=Men's Black Watch"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.description").value("A black watch"))
                 .andExpect(jsonPath("$.manufacturer").value("IZOD"));
