@@ -39,4 +39,5 @@ test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
 
- 
+heroku-keys
+heroku-keys.pub
