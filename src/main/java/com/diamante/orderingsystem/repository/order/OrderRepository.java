@@ -13,6 +13,10 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     List<Order> findOrdersByCustomer(Customer customer);
 
+    void deleteAllByCustomer(Customer customer);
+
+    Order findOrderByCustomerAndOrderId(Customer customer, Long id);
+
     @Modifying
     @Transactional
     @Query(value = "ALTER SEQUENCE orders_order_id_seq RESTART WITH 1", nativeQuery = true)

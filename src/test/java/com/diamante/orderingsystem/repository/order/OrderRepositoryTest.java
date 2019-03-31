@@ -66,6 +66,19 @@ public class OrderRepositoryTest extends TestDatabaseSetup {
     // deleteById_deletesCorrectOrderFromDatabase
     // findOrdersByCustomer_returnsListOfOrdersForGivenCustomer
 
+//    @Test
+//    public void save_savesOrderToDatabase() {
+//
+//        Order order = Order.builder()
+//                .customer(customer1)
+//                .orderDate(LocalDate.of(2019, 02, 10))
+//                .totalBalance(400)
+//                .build();
+//
+//        Order savedOrder = orderRepository.save(order);
+//        assertThat(savedOrder).isEqualToComparingFieldByField(order);
+//    }
+
     private void setUpCustomersAndProducts() {
         customer1 = Customer.builder()
                 .firstName("Paul")

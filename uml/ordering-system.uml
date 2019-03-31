@@ -3,14 +3,14 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="0.0" y="228.0">com.diamante.orderingsystem.entity.Customer</node>
-    <node x="0.0" y="390.0">com.diamante.orderingsystem.entity.PaymentInfo</node>
+    <node x="484.0" y="475.0">com.diamante.orderingsystem.entity.PaymentInfo</node>
     <node x="0.0" y="0.0">com.diamante.orderingsystem.entity.Product</node>
-    <node x="238.0" y="0.0">com.diamante.orderingsystem.entity.Order</node>
+    <node x="409.0" y="0.0">com.diamante.orderingsystem.entity.Order</node>
+    <node x="0.0" y="475.0">com.diamante.orderingsystem.entity.Customer</node>
   </nodes>
   <notes />
   <edges />
-  <settings layout="Hierarchic Group" zoom="0.8" x="59.0" y="253.75" />
+  <settings layout="Hierarchic Group" zoom="0.8" x="900.0" y="877.5" />
   <SelectedNodes />
   <Categories>
     <Category>Fields</Category>

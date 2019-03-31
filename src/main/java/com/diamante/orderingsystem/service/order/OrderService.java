@@ -12,7 +12,7 @@ public interface OrderService {
 
     Order updateOrder(Order updatedOrder);
 
-    void deleteOrderById();
+    void deleteOrderById(Long id);
 
     void deleteAllOrdersForCustomer(Customer customer);
 

@@ -1,6 +1,7 @@
 package com.diamante.orderingsystem.controller;
 
 import com.diamante.orderingsystem.controller.customer.CustomerNotFoundException;
+import com.diamante.orderingsystem.controller.order.OrderNotFoundException;
 import com.diamante.orderingsystem.controller.product.ProductNotFoundException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,19 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<?> orderNotFoundException(OrderNotFoundException ex, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timeStamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .details(request.getDescription(false))
+                .build();
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<?> customerNotFoundException(CustomerNotFoundException ex, WebRequest request) {
@@ -158,4 +172,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 }

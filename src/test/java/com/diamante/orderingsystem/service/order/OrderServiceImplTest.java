@@ -3,17 +3,21 @@ package com.diamante.orderingsystem.service.order;
 import com.diamante.orderingsystem.entity.*;
 import com.diamante.orderingsystem.repository.order.OrderRepository;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataRetrievalFailureException;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @DataJpaTest
@@ -47,27 +51,14 @@ public class OrderServiceImplTest {
     private Customer customer2;
     // endregion test variables
 
+
     @Before
     public void setUp() throws Exception {
         setUpTestStubs();
     }
-
-    /**
-     * Test Cases
-     **/
-    // saveOrder_savesOrderToDatabase
-    // findAllOrdersForCustomer_returnsListOfOrdersForGivenCustomer
-    // findAllOrdersForCustomer_returnsNull_whenCustomerDoesNotExistInDatabase
-    // updateOrder_updatesExistingOrderInTheDatabase_returnsUpdatedOrder
-    // updateOrder_returnsNull_whenOrderIdDoesNotExistInDatabase
-    // deleteOrderById_ThrowsDataRetrievalFailureException_whenOrderIdDoesNotExistInDatabase
-    // deleteOrderById_removesOrderFromDatabase
-    // deleteAllOrdersForCustomer_removesAllOrdersFromDatabaseForTheGivenCustomer
-    // deleteAllOrdersForCustomer_returnsCustomerNotFoundException_whenCustomerDoesNotExistInDatabase
-    // resetAllOrderIds_callsResetAllOrderIds
-
     private void setUpTestStubs() {
         customer1 = Customer.builder()
+                .customerId(1L)
                 .firstName("Paul")
                 .lastName("Ryan")
                 .paymentInfo(PaymentInfo.builder()
@@ -78,6 +69,7 @@ public class OrderServiceImplTest {
                         .build())
                 .build();
         customer2 = Customer.builder()
+                .customerId(2L)
                 .firstName("Jim")
                 .lastName("Jefferies")
                 .paymentInfo(PaymentInfo.builder()
@@ -89,6 +81,7 @@ public class OrderServiceImplTest {
                 .build();
 
         product1 = Product.builder()
+                .productId(1L)
                 .productName("Ipod")
                 .description("Music player")
                 .manufacturer("Apple")
@@ -97,6 +90,7 @@ public class OrderServiceImplTest {
                 .build();
 
         product2 = Product.builder()
+                .productId(2L)
                 .productName("Merlin")
                 .description("Novel about the adventures of King Arthur and a wizard named Merlin.")
                 .manufacturer("Penguin Books")
@@ -105,6 +99,7 @@ public class OrderServiceImplTest {
                 .build();
 
         product3 = Product.builder()
+                .productId(3L)
                 .productName("Men's Black Watch")
                 .description("A black watch")
                 .manufacturer("IZOD")
@@ -113,6 +108,7 @@ public class OrderServiceImplTest {
                 .build();
 
         product4 = Product.builder()
+                .productId(4L)
                 .productName("Flat Screen TV")
                 .description("OLED High Definition TV")
                 .manufacturer("Samsung")
@@ -121,6 +117,7 @@ public class OrderServiceImplTest {
                 .build();
 
         product5 = Product.builder()
+                .productId(5L)
                 .productName("Refrigerator")
                 .description("Black Refrigerator with water dispenser")
                 .manufacturer("Black & Decker")
@@ -129,6 +126,7 @@ public class OrderServiceImplTest {
                 .build();
 
         product6 = Product.builder()
+                .productId(6L)
                 .productName("Summer Dress")
                 .description("Yellow sunflower dress for 18-24 mos.")
                 .manufacturer("Osh Kosh Ba Gosh")
@@ -145,6 +143,7 @@ public class OrderServiceImplTest {
         totalBalance3 = product5.getPrice() + product6.getPrice();
 
         order1 = Order.builder()
+                .orderId(1L)
                 .customer(customer1)
                 .products(productSet1)
                 .orderDate(LocalDate.of(2018, 6, 15))
@@ -152,6 +151,7 @@ public class OrderServiceImplTest {
                 .build();
 
         order2 = Order.builder()
+                .orderId(2L)
                 .customer(customer1)
                 .products(productSet2)
                 .orderDate(LocalDate.of(2017, 2, 8))
@@ -159,10 +159,116 @@ public class OrderServiceImplTest {
                 .build();
 
         order3 = Order.builder()
-                .customer(customer2)
+                .orderId(3L)
+                .customer(customer1)
                 .products(productSet3)
                 .orderDate(LocalDate.of(2019, 1, 17))
                 .totalBalance(totalBalance2)
                 .build();
+    }
+
+
+    @Test
+    public void saveOrder_savesOrderToDatabase() {
+        // Arrange
+        when(orderRepository.save(any())).thenReturn(order1);
+
+        // Act
+        Order saveOrder = orderService.saveOrder(order1);
+
+        // Assert
+        assertThat(saveOrder).isEqualToComparingFieldByField(order1);
+
+    }
+
+    @Test
+    public void findAllOrdersForCustomer_returnsListOfOrdersForGivenCustomer() {
+        when(orderRepository.findOrdersByCustomer(customer1)).thenReturn(Arrays.asList(order1, order2));
+
+        List<Order> orders = orderService.findAllOrdersForCustomer(customer1);
+        assertThat(orders.size()).isEqualTo(2);
+        assertThat(orders.get(0)).isEqualTo(order1);
+        assertThat(orders.get(1)).isEqualTo(order2);
+    }
+
+    @Test
+    public void findAllOrdersForCustomer_returnsNull_whenCustomerDoesNotExistInDatabase() {
+        when(orderRepository.findOrdersByCustomer(customer2)).thenReturn(Collections.emptyList());
+//TODO check actual return value
+        List<Order> orders = orderService.findAllOrdersForCustomer(customer2);
+        assertThat(orders).isEqualTo(null);
+    }
+
+    @Test
+    public void updateOrder_updatesExistingOrderInTheDatabase_returnsUpdatedOrder() {
+        Order updateOrder = Order.builder()
+                .orderId(1L)
+                .customer(customer1)
+                .products(productSet2)
+                .orderDate(LocalDate.of(2019, 10, 25))
+                .totalBalance(totalBalance2)
+                .build();
+
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order1));
+        when(orderRepository.save(any())).thenReturn(updateOrder);
+
+        Order actualOrder = orderService.updateOrder(updateOrder);
+        assertThat(actualOrder).isEqualTo(updateOrder);
+    }
+
+    @Test
+    public void updateOrder_returnsNull_whenOrderIdDoesNotExistInDatabase() {
+        Order updateOrder = Order.builder()
+                .orderId(5L)
+                .customer(customer1)
+                .products(productSet2)
+                .orderDate(LocalDate.of(2019, 10, 25))
+                .totalBalance(totalBalance2)
+                .build();
+        when(orderRepository.findById(5L)).thenReturn(Optional.empty());
+         Order actualOrder = orderService.updateOrder(updateOrder);
+         assertThat(actualOrder).isEqualTo(null);
+    }
+
+    @Test(expected = DataRetrievalFailureException.class)
+    public void deleteOrderById_ThrowsDataRetrievalFailureException_whenOrderIdDoesNotExistInDatabase() {
+        doThrow(new DataRetrievalFailureException("Nothing")).when(orderRepository).deleteById(5L);
+
+        orderService.deleteOrderById(5L);
+        verify(orderRepository).deleteById(5L);
+    }
+
+    @Test
+    public void deleteOrderById_removesOrderFromDatabase() {
+        doNothing().when(orderRepository).deleteById(anyLong());
+
+        orderService.deleteOrderById(1L);
+        verify(orderRepository).deleteById(eq(order1.getOrderId()));
+    }
+
+    @Test
+    public void deleteAllOrdersForCustomer_removesAllOrdersFromDatabaseForTheGivenCustomer() {
+        doNothing().when(orderRepository).deleteAllByCustomer(any(Customer.class));
+
+        orderService.deleteAllOrdersForCustomer(customer1);
+        verify(orderRepository).deleteAllByCustomer(customer1);
+    }
+
+    //TODO find out what it throws
+    @Test
+    @Ignore
+    public void deleteAllOrdersForCustomer_returnsCustomerNotFoundException_whenCustomerDoesNotExistInDatabase() {
+
+            doNothing().when(orderRepository).deleteAllByCustomer(customer2);
+
+            orderService.deleteAllOrdersForCustomer(customer2);
+            verify(orderRepository).deleteAllByCustomer(customer2);
+
+    }
+
+    @Test
+    public void resetAllOrderIds_callsResetAllOrderIds() {
+        orderService.resetAllOrderIds();
+        verify(orderRepository).resetAllOrderIds();
     }
 }
