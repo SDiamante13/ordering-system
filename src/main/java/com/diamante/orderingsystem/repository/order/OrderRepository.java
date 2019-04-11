@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
     List<Order> findOrdersByCustomer(Customer customer);
+
+//    List<Order> findOrderByCustomer_CustomerId(Long id);
+    List<Order> findOrderByOrderDateBefore(Date date);
 
     void deleteAllByCustomer(Customer customer);
 

@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "ORDERS")
-public class Order {
+public class Order  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;

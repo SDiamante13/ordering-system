@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @Profile("test")
 @Slf4j
@@ -19,6 +20,7 @@ public class InitialDataLoader implements CommandLineRunner {
     private final CustomerService customerService;
     private final ProductService productService;
 
+
     public InitialDataLoader(CustomerService customerService, ProductService productService) {
         this.customerService = customerService;
         this.productService = productService;
@@ -26,6 +28,7 @@ public class InitialDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
         log.info("*************Loading customers into database*************");
 
         customerService.deleteAllCustomers();
@@ -37,6 +40,12 @@ public class InitialDataLoader implements CommandLineRunner {
         productService.deleteAllProducts();
         productService.resetAllProductIds();
         saveProducts();
+
+//        log.info("********Loading Orders into database*************");
+//
+//        orderService.deleteAllOrders();
+//        orderService.resetAllOrderIds();
+
     }
 
     private void saveProducts() {
@@ -100,4 +109,5 @@ public class InitialDataLoader implements CommandLineRunner {
                         .build())
                 .build());
     }
+
 }

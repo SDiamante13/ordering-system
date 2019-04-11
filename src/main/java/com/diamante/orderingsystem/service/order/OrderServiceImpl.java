@@ -5,6 +5,7 @@ import com.diamante.orderingsystem.entity.Order;
 import com.diamante.orderingsystem.repository.order.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findAllOrders() {
+        return (List<Order>) orderRepository.findAll();
+    }
+
+    @Override
     public List<Order> findAllOrdersForCustomer(Customer customer) {
         List<Order> ordersByCustomer = orderRepository.findOrdersByCustomer(customer);
         if (ordersByCustomer.isEmpty()) {
@@ -30,6 +36,14 @@ public class OrderServiceImpl implements OrderService {
         }
         return ordersByCustomer;
     }
+//    @Override
+//    public List<Order> findAllOrdersForCustomer(Long id) {
+//        List<Order> ordersByCustomer = orderRepository.findOrderByCustomer_CustomerId(id);
+//        if (ordersByCustomer.isEmpty()) {
+//            return null;
+//        }
+//        return ordersByCustomer;
+//    }
 
     @Override
     public Order updateOrder(Order updatedOrder) {
@@ -46,6 +60,16 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalBalance(updatedOrder.getTotalBalance());
 
         return orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findAllOrdersBeforeDate(Date date) {
+
+    }
+
+    @Override
+    public void deleteAllOrders() {
+        orderRepository.deleteAll();
     }
 
     @Override
