@@ -22,7 +22,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany
     @JoinTable(
             name = "ORDER_PRODUCT",
             joinColumns = @JoinColumn(name = "ORDER_ID"),
@@ -36,7 +36,7 @@ public class Order {
     @Range(min = 1, message = "Total balance must be at least $1")
     private double totalBalance;
 
-    @ManyToOne(cascade = { CascadeType.ALL })
+    @ManyToOne
     @JoinColumn(name = "CUSTOMER_FK")
     @NotNull(message = "Customer is a required field")
     private Customer customer;
