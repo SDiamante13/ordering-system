@@ -247,6 +247,15 @@ public class OrderRepositoryTest extends TestDatabaseSetup {
                 .totalBalance(totalBalance2)
                 .build();
 
+        customerRepository.save(customer1);
+        customerRepository.save(customer2);
+
+        productRepository.save(product1);
+        productRepository.save(product2);
+        productRepository.save(product3);
+        productRepository.save(product4);
+        productRepository.save(product5);
+        productRepository.save(product6);
 
         testEntityManager.persist(order1);
         testEntityManager.persist(order2);

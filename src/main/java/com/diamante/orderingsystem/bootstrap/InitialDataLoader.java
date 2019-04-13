@@ -18,7 +18,7 @@ import java.util.Set;
 
 
 @Component
-@Profile("prod")
+@Profile("test")
 @Slf4j
 @Transactional
 public class InitialDataLoader implements CommandLineRunner {
