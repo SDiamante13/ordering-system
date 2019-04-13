@@ -76,8 +76,8 @@ public class OrderControllerIntegrationTest extends TestDatabaseSetup {
 
     @After
     public void tearDown() throws Exception {
-        orderService.deleteAllOrdersForCustomer(customer1);
-        orderService.deleteAllOrdersForCustomer(customer2);
+        orderService.deleteAllOrdersForCustomer(1L);
+        orderService.deleteAllOrdersForCustomer(2L);
         customerService.deleteAllCustomers();
         productService.deleteAllProducts();
     }

@@ -1,29 +1,24 @@
 package com.diamante.orderingsystem.service.order;
 
-import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.Order;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderService {
     Order saveOrder(Order order);
 
-    List<Order> findAllOrders();
+    Order findByOrderId(Long orderId);
 
-    List<Order> findAllOrdersForCustomer(Customer customer);
+    List<Order> findAllOrdersForCustomer(Long customerId);
 
-    List<Order> findAllOrdersBeforeDate(Date date);
-
-//    List<Order> findAllOrdersForCustomer(Long id);
+    List<Order> findAllOrdersForCustomerAfterOrderDate(Long customerId, LocalDate orderDate);
 
     Order updateOrder(Order updatedOrder);
 
-    void deleteAllOrders();
+    void deleteAllOrdersForCustomer(Long customerId);
 
-    void deleteOrderById(Long id);
-
-    void deleteAllOrdersForCustomer(Customer customer);
+    void deleteOrderById(Long orderId);
 
     void resetAllOrderIds();
 }

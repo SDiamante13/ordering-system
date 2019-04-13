@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -15,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "ORDERS")
-public class Order  {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
@@ -25,13 +27,17 @@ public class Order  {
             name = "ORDER_PRODUCT",
             joinColumns = @JoinColumn(name = "ORDER_ID"),
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
+    @NotNull(message = "Products is a required field")
     private Set<Product> products;
 
+    @NotNull(message = "Order date is a required field")
     private LocalDate orderDate;
 
+    @Range(min = 1, message = "Total balance must be at least $1")
     private double totalBalance;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "CUSTOMER_FK")
+    @NotNull(message = "Customer is a required field")
     private Customer customer;
 }

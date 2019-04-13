@@ -5,6 +5,7 @@ import com.diamante.orderingsystem.controller.order.OrderNotFoundException;
 import com.diamante.orderingsystem.controller.product.ProductNotFoundException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
 
 
     @ExceptionHandler(OrderNotFoundException.class)
@@ -96,6 +96,11 @@ public class GlobalExceptionHandler {
                     .message("Optional Parameter, price, must be a double. " +
                             "Example: /product/list?price=71.99")
                     .build();
+        } else if (ex.getName().equals("date")) {
+            errorDetails = errorDetailsBuilder
+                    .message("Optional Parameter, date, must be a properly formatted date. " +
+                            "Example: /customer/1/order?date=2017-02-19")
+                    .build();
         } else {
             errorDetails = errorDetailsBuilder
                     .message(ex.getMessage())
@@ -125,6 +130,17 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class) /** This happens when orderRepository.deleteAll when there is nothing to delete */
+    public ResponseEntity<?> dataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timeStamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .details(request.getDescription(false))
+                .build();
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(JsonMappingException.class)

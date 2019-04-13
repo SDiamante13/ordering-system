@@ -3,7 +3,6 @@ package com.diamante.orderingsystem.service.order;
 import com.diamante.orderingsystem.entity.*;
 import com.diamante.orderingsystem.repository.order.OrderRepository;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -51,11 +50,122 @@ public class OrderServiceImplTest {
     private Customer customer2;
     // endregion test variables
 
-
     @Before
     public void setUp() throws Exception {
         setUpTestStubs();
     }
+
+    @Test
+    public void saveOrder_savesOrderToDatabase() {
+        // Arrange
+        when(orderRepository.save(any())).thenReturn(order1);
+
+        // Act
+        Order saveOrder = orderService.saveOrder(order1);
+
+        // Assert
+        assertThat(saveOrder).isEqualToComparingFieldByField(order1);
+
+    }
+
+    @Test
+    public void findAllOrdersForCustomer_returnsListOfOrdersForGivenCustomer() {
+        when(orderRepository.findOrdersByCustomer_CustomerId(1L)).thenReturn(Arrays.asList(order1, order2));
+
+        List<Order> orders = orderService.findAllOrdersForCustomer(1L);
+        assertThat(orders.size()).isEqualTo(2);
+        assertThat(orders.get(0)).isEqualToComparingFieldByField(order1);
+        assertThat(orders.get(1)).isEqualToComparingFieldByField(order2);
+    }
+
+    @Test
+    public void findAllOrdersForCustomer_returnsNull_whenCustomerDoesNotExistInDatabase() {
+        when(orderRepository.findOrdersByCustomer_CustomerId(2L)).thenReturn(Collections.emptyList());
+
+        List<Order> orders = orderService.findAllOrdersForCustomer(2L);
+        assertThat(orders.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void findAllOrdersForCustomerAfterOrderDate_returnsListOfOrdersFilteredByOrderDate() {
+        when(orderRepository.findOrdersByCustomer_CustomerIdAndOrderDateAfter(any(), any())).thenReturn(Arrays.asList(order1, order3));
+
+        List<Order> orders = orderService.findAllOrdersForCustomerAfterOrderDate(1L, LocalDate.of(2018, 5, 4));
+        assertThat(orders.size()).isEqualTo(2);
+        assertThat(orders.get(0)).isEqualToComparingFieldByField(order1);
+        assertThat(orders.get(1)).isEqualToComparingFieldByField(order3);
+    }
+
+    @Test
+    public void findByOrderId_returnsCorrectOrder() {
+        when(orderRepository.findById(2L)).thenReturn(Optional.of(order2));
+
+        Order actualOrder = orderService.findByOrderId(2L);
+
+        assertThat(actualOrder).isEqualToComparingFieldByField(order2);
+    }
+
+    @Test
+    public void updateOrder_updatesExistingOrderInTheDatabase_returnsUpdatedOrder() {
+        Order updateOrder = Order.builder()
+                .orderId(1L)
+                .customer(customer1)
+                .products(productSet2)
+                .orderDate(LocalDate.of(2019, 10, 25))
+                .totalBalance(totalBalance2)
+                .build();
+
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order1));
+        when(orderRepository.save(any())).thenReturn(updateOrder);
+
+        Order actualOrder = orderService.updateOrder(updateOrder);
+        assertThat(actualOrder).isEqualTo(updateOrder);
+    }
+
+    @Test
+    public void updateOrder_returnsNull_whenOrderIdDoesNotExistInDatabase() {
+        Order updateOrder = Order.builder()
+                .orderId(5L)
+                .customer(customer1)
+                .products(productSet2)
+                .orderDate(LocalDate.of(2019, 10, 25))
+                .totalBalance(totalBalance2)
+                .build();
+        when(orderRepository.findById(5L)).thenReturn(Optional.empty());
+        Order actualOrder = orderService.updateOrder(updateOrder);
+        assertThat(actualOrder).isEqualTo(null);
+    }
+
+    @Test(expected = DataRetrievalFailureException.class)
+    public void deleteOrderById_ThrowsDataRetrievalFailureException_whenOrderIdDoesNotExistInDatabase() {
+        doThrow(new DataRetrievalFailureException("Nothing")).when(orderRepository).deleteById(5L);
+
+        orderService.deleteOrderById(5L);
+        verify(orderRepository).deleteById(5L);
+    }
+
+    @Test
+    public void deleteOrderById_removesOrderFromDatabase() {
+        doNothing().when(orderRepository).deleteById(anyLong());
+
+        orderService.deleteOrderById(1L);
+        verify(orderRepository).deleteById(eq(order1.getOrderId()));
+    }
+
+    @Test
+    public void deleteAllOrdersForCustomer_removesAllOrdersFromDatabaseForTheGivenCustomer() {
+        doNothing().when(orderRepository).deleteAllByCustomer_CustomerId(1L);
+
+        orderService.deleteAllOrdersForCustomer(1L);
+        verify(orderRepository).deleteAllByCustomer_CustomerId(eq(1L));
+    }
+
+    @Test
+    public void resetAllOrderIds_callsResetAllOrderIds() {
+        orderService.resetAllOrderIds();
+        verify(orderRepository).resetAllOrderIds();
+    }
+
     private void setUpTestStubs() {
         customer1 = Customer.builder()
                 .customerId(1L)
@@ -165,110 +275,5 @@ public class OrderServiceImplTest {
                 .orderDate(LocalDate.of(2019, 1, 17))
                 .totalBalance(totalBalance2)
                 .build();
-    }
-
-
-    @Test
-    public void saveOrder_savesOrderToDatabase() {
-        // Arrange
-        when(orderRepository.save(any())).thenReturn(order1);
-
-        // Act
-        Order saveOrder = orderService.saveOrder(order1);
-
-        // Assert
-        assertThat(saveOrder).isEqualToComparingFieldByField(order1);
-
-    }
-
-    @Test
-    public void findAllOrdersForCustomer_returnsListOfOrdersForGivenCustomer() {
-        when(orderRepository.findOrdersByCustomer(customer1)).thenReturn(Arrays.asList(order1, order2));
-
-        List<Order> orders = orderService.findAllOrdersForCustomer(customer1);
-        assertThat(orders.size()).isEqualTo(2);
-        assertThat(orders.get(0)).isEqualTo(order1);
-        assertThat(orders.get(1)).isEqualTo(order2);
-    }
-
-    @Test
-    public void findAllOrdersForCustomer_returnsNull_whenCustomerDoesNotExistInDatabase() {
-        when(orderRepository.findOrdersByCustomer(customer2)).thenReturn(Collections.emptyList());
-//TODO check actual return value
-        List<Order> orders = orderService.findAllOrdersForCustomer(customer2);
-        assertThat(orders).isEqualTo(null);
-    }
-
-    @Test
-    public void updateOrder_updatesExistingOrderInTheDatabase_returnsUpdatedOrder() {
-        Order updateOrder = Order.builder()
-                .orderId(1L)
-                .customer(customer1)
-                .products(productSet2)
-                .orderDate(LocalDate.of(2019, 10, 25))
-                .totalBalance(totalBalance2)
-                .build();
-
-        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order1));
-        when(orderRepository.save(any())).thenReturn(updateOrder);
-
-        Order actualOrder = orderService.updateOrder(updateOrder);
-        assertThat(actualOrder).isEqualTo(updateOrder);
-    }
-
-    @Test
-    public void updateOrder_returnsNull_whenOrderIdDoesNotExistInDatabase() {
-        Order updateOrder = Order.builder()
-                .orderId(5L)
-                .customer(customer1)
-                .products(productSet2)
-                .orderDate(LocalDate.of(2019, 10, 25))
-                .totalBalance(totalBalance2)
-                .build();
-        when(orderRepository.findById(5L)).thenReturn(Optional.empty());
-         Order actualOrder = orderService.updateOrder(updateOrder);
-         assertThat(actualOrder).isEqualTo(null);
-    }
-
-    @Test(expected = DataRetrievalFailureException.class)
-    public void deleteOrderById_ThrowsDataRetrievalFailureException_whenOrderIdDoesNotExistInDatabase() {
-        doThrow(new DataRetrievalFailureException("Nothing")).when(orderRepository).deleteById(5L);
-
-        orderService.deleteOrderById(5L);
-        verify(orderRepository).deleteById(5L);
-    }
-
-    @Test
-    public void deleteOrderById_removesOrderFromDatabase() {
-        doNothing().when(orderRepository).deleteById(anyLong());
-
-        orderService.deleteOrderById(1L);
-        verify(orderRepository).deleteById(eq(order1.getOrderId()));
-    }
-
-    @Test
-    public void deleteAllOrdersForCustomer_removesAllOrdersFromDatabaseForTheGivenCustomer() {
-        doNothing().when(orderRepository).deleteAllByCustomer(any(Customer.class));
-
-        orderService.deleteAllOrdersForCustomer(customer1);
-        verify(orderRepository).deleteAllByCustomer(customer1);
-    }
-
-    //TODO find out what it throws
-    @Test
-    @Ignore
-    public void deleteAllOrdersForCustomer_returnsCustomerNotFoundException_whenCustomerDoesNotExistInDatabase() {
-
-            doNothing().when(orderRepository).deleteAllByCustomer(customer2);
-
-            orderService.deleteAllOrdersForCustomer(customer2);
-            verify(orderRepository).deleteAllByCustomer(customer2);
-
-    }
-
-    @Test
-    public void resetAllOrderIds_callsResetAllOrderIds() {
-        orderService.resetAllOrderIds();
-        verify(orderRepository).resetAllOrderIds();
     }
 }

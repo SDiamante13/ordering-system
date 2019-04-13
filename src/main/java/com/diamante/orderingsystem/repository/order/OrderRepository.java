@@ -1,25 +1,21 @@
 package com.diamante.orderingsystem.repository.order;
 
-import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.Order;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    List<Order> findOrdersByCustomer(Customer customer);
+    List<Order> findOrdersByCustomer_CustomerId(Long customerId);
 
-//    List<Order> findOrderByCustomer_CustomerId(Long id);
-    List<Order> findOrderByOrderDateBefore(Date date);
+    List<Order> findOrdersByCustomer_CustomerIdAndOrderDateAfter(Long customerId, LocalDate orderDate);
 
-    void deleteAllByCustomer(Customer customer);
-
-    Order findOrderByCustomerAndOrderId(Customer customer, Long id);
+    void deleteAllByCustomer_CustomerId(Long customerId);
 
     @Modifying
     @Transactional

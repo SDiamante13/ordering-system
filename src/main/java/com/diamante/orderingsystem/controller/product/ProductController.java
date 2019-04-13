@@ -54,6 +54,7 @@ public class ProductController {
     }
 
     @ApiOperation(value = "View product by searching using the product Id")
+    @ApiResponse(code = 201, message = "Product created")
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping()
     public Product createProduct(@Valid @RequestBody Product product, BindingResult result) {

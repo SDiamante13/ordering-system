@@ -44,6 +44,7 @@ public class CustomerController {
     }
 
     @ApiOperation(value = "Creates a new customer")
+    @ApiResponse(code = 201, message = "Customer created")
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping
     public Customer createCustomer(@Valid @RequestBody Customer customer, BindingResult result) {

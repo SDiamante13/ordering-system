@@ -1,11 +1,10 @@
 package com.diamante.orderingsystem.service.order;
 
-import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.entity.Order;
 import com.diamante.orderingsystem.repository.order.OrderRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,26 +23,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllOrders() {
-        return (List<Order>) orderRepository.findAll();
+    public Order findByOrderId(Long orderId) {
+        return orderRepository.findById(orderId).orElse(null);
     }
 
     @Override
-    public List<Order> findAllOrdersForCustomer(Customer customer) {
-        List<Order> ordersByCustomer = orderRepository.findOrdersByCustomer(customer);
-        if (ordersByCustomer.isEmpty()) {
-            return null;
-        }
-        return ordersByCustomer;
+    public List<Order> findAllOrdersForCustomer(Long customerId) {
+        return orderRepository.findOrdersByCustomer_CustomerId(customerId);
     }
-//    @Override
-//    public List<Order> findAllOrdersForCustomer(Long id) {
-//        List<Order> ordersByCustomer = orderRepository.findOrderByCustomer_CustomerId(id);
-//        if (ordersByCustomer.isEmpty()) {
-//            return null;
-//        }
-//        return ordersByCustomer;
-//    }
+
+    @Override
+    public List<Order> findAllOrdersForCustomerAfterOrderDate(Long customerId, LocalDate orderDate) {
+        return orderRepository.findOrdersByCustomer_CustomerIdAndOrderDateAfter(customerId, orderDate);
+    }
 
     @Override
     public Order updateOrder(Order updatedOrder) {
@@ -55,31 +47,21 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = originalOrder.get();
         order.setCustomer(updatedOrder.getCustomer());
-        order.setOrderDate(updatedOrder.getOrderDate());
         order.setProducts(updatedOrder.getProducts());
+        order.setOrderDate(updatedOrder.getOrderDate());
         order.setTotalBalance(updatedOrder.getTotalBalance());
 
         return orderRepository.save(order);
     }
 
     @Override
-    public List<Order> findAllOrdersBeforeDate(Date date) {
-
+    public void deleteAllOrdersForCustomer(Long customerId) {
+        orderRepository.deleteAllByCustomer_CustomerId(customerId);
     }
 
     @Override
-    public void deleteAllOrders() {
-        orderRepository.deleteAll();
-    }
-
-    @Override
-    public void deleteOrderById(Long id) {
-        orderRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteAllOrdersForCustomer(Customer customer) {
-        orderRepository.deleteAllByCustomer(customer);
+    public void deleteOrderById(Long orderId) {
+        orderRepository.deleteById(orderId);
     }
 
     @Override
