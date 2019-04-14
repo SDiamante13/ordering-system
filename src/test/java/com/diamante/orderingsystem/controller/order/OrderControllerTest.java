@@ -309,7 +309,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void deleteOrderForCustomer_removesSingleOrder_statusIsNoContent() throws Exception {
+    public void deleteOrder_removesSingleOrder_statusIsNoContent() throws Exception {
         doNothing().when(orderService).deleteOrderById(anyLong());
 
         mockMvc.perform(delete("/order/4"))
@@ -319,7 +319,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void deleteOrderForCustomer_returnsDataRetrievalFailureErrorMessage_whenOrderIdDoesNotExist_statusIsNotFound() throws Exception {
+    public void deleteOrder_returnsDataRetrievalFailureErrorMessage_whenOrderIdDoesNotExist_statusIsNotFound() throws Exception {
         doThrow(new DataRetrievalFailureException("Not here!"))
                 .when(orderService).deleteOrderById(anyLong());
 

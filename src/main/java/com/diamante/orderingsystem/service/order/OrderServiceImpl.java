@@ -39,6 +39,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order updateOrder(Order updatedOrder) {
+        if (updatedOrder.getOrderId() == null) {
+            return null;
+        }
+
         Optional<Order> originalOrder = orderRepository.findById(updatedOrder.getOrderId());
 
         if(!originalOrder.isPresent()) {
