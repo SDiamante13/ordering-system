@@ -27,3 +27,8 @@ docker run --name postgres-dev -e POSTGRES_PASSWORD=password -e POSTGRES_DB=orde
 docker stop postgres-dev
 docker rm postgres-dev
 docker start postgres-dev
+
+## Jenkins CI/CD
+
+
+docker run -d -v jenkins_home:/var/jenkins_home --name jenkins -p 8080:8080 -p 50000:50000 jenkins/jenkins:alpine
