@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
     @Data
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public class EntityValidationException extends RuntimeException {
-        String message;
+        private final String message;
 
         public EntityValidationException(String message) {
             super(message);

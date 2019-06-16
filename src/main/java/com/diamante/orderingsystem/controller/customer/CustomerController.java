@@ -2,9 +2,7 @@ package com.diamante.orderingsystem.controller.customer;
 
 import com.diamante.orderingsystem.entity.Customer;
 import com.diamante.orderingsystem.service.customer.CustomerService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.*;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.TransactionSystemException;
@@ -18,7 +16,9 @@ import static com.diamante.orderingsystem.utils.ExceptionUtils.createErrorMessag
 
 @RestController
 @RequestMapping("/customer")
-@Api(value = "Customer and Payment API", description = "Store new customers and retrieve customer info of existing customers.")
+@Api(tags = {"Customer and Payment API"})
+@SwaggerDefinition(tags = {@Tag(name = "Customer and Payment API",
+        description = "Store new customers and retrieve customer info of existing customers.")})
 public class CustomerController {
 
     private final CustomerService customerService;

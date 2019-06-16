@@ -206,8 +206,8 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$[1].totalBalance", is(totalBalance2)));
     }
 
-    @Test /** NOTE: Flaky Test */
-    @Ignore
+    @Test
+    @Ignore(value = "Flaky test")
     public void updateOrder_updatesTheOrderInTheDatabase_statusIsOk() throws Exception {
         Product newProduct = Product.builder()
                 .productName("James Bond")

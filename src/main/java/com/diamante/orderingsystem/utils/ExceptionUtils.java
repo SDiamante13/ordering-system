@@ -6,6 +6,8 @@ import org.springframework.validation.FieldError;
 
 public class ExceptionUtils {
 
+    private ExceptionUtils() { }
+
     public static void createErrorMessageAndThrowEntityValidationException(BindingResult result) {
         FieldError fieldError = result.getFieldErrors().get(0);
         String errorMessage = "The field " + fieldError.getField() +
