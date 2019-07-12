@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(CustomerController.class)
+@WebMvcTest(secure = false, value = CustomerController.class)
 @ActiveProfiles("default")
 public class CustomerControllerTest {
 

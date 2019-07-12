@@ -1,8 +1,9 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.2.RELEASE'
+		springBootVersion = '2.1.6.RELEASE'
 		swaggerVersion = '2.6.1'
 		postgresVersion = '42.2.5'
+		springSecurityJwtVersion = '1.0.10.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -28,6 +29,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation "io.springfox:springfox-swagger2:$swaggerVersion"
 	implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
 	implementation "org.postgresql:postgresql:$postgresVersion"
