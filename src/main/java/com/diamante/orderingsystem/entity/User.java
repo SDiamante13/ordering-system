@@ -1,4 +1,4 @@
-package com.diamante.orderingsystem.security;
+package com.diamante.orderingsystem.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,14 +20,14 @@ import static java.util.stream.Collectors.toList;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "CLIENTS")
-public class Client implements UserDetails {
+@Table(name = "USERS")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String clientName;
-    private String clientSecret;
+    private String username;
+    private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -42,12 +42,12 @@ public class Client implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.clientName;
+        return this.username;
     }
 
     @Override
     public String getPassword() {
-        return this.clientSecret;
+        return this.password;
     }
 
     @Override

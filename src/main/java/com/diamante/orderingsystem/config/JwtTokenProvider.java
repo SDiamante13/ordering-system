@@ -1,8 +1,8 @@
-package com.diamante.orderingsystem.security.config;
+package com.diamante.orderingsystem.config;
 
-import com.diamante.orderingsystem.security.CustomUserDetailsService;
+import com.diamante.orderingsystem.service.security.CustomUserDetailsService;
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,14 +15,16 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
+
+    private final CustomUserDetailsService userDetailsService;
+
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey = "secret";
     @Value("${security.jwt.token.expire-length:3600000}")
     private long validityInMilliseconds = 3600000;
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
 
     @PostConstruct
     protected void init() {

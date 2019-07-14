@@ -10,6 +10,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,6 +54,17 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorDetails> badCredentialsException(BadCredentialsException ex, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timeStamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .details(request.getDescription(false))
+                .build();
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(DataRetrievalFailureException.class)
@@ -131,7 +143,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class) /** This happens when orderRepository.deleteAll when there is nothing to delete */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    /** This happens when orderRepository.deleteAll when there is nothing to delete */
     public ResponseEntity<ErrorDetails> dataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
         ErrorDetails errorDetails = ErrorDetails.builder()
                 .timeStamp(LocalDateTime.now())

@@ -1,4 +1,4 @@
-package com.diamante.orderingsystem.security;
+package com.diamante.orderingsystem.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
