@@ -4,6 +4,7 @@ import com.diamante.orderingsystem.controller.customer.CustomerNotFoundException
 import com.diamante.orderingsystem.controller.order.OrderNotFoundException;
 import com.diamante.orderingsystem.controller.product.ProductNotFoundException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -58,6 +59,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorDetails> badCredentialsException(BadCredentialsException ex, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timeStamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .details(request.getDescription(false))
+                .build();
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ErrorDetails> jwtException(JwtException ex, WebRequest request) {
         ErrorDetails errorDetails = ErrorDetails.builder()
                 .timeStamp(LocalDateTime.now())
                 .message(ex.getMessage())

@@ -36,6 +36,7 @@ dependencies {
 	implementation "org.postgresql:postgresql:$postgresVersion"
 	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test:5.1.5.RELEASE'
 	testImplementation "org.testcontainers:postgresql:1.10.7"
 	testImplementation "org.testcontainers:testcontainers:1.10.7"
 }
