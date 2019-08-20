@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
-@Profile({"dev", "prod"})
+@Profile("test")
 @RequiredArgsConstructor
 @Slf4j
 @Component
