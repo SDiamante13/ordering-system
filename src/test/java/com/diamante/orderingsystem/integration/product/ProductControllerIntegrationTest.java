@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ResourceBundle;
+
 import static com.diamante.orderingsystem.entity.Category.ELECTRONICS;
 import static com.diamante.orderingsystem.entity.Category.HOME_LIVING;
 import static org.hamcrest.Matchers.*;
@@ -96,6 +98,14 @@ public class ProductControllerIntegrationTest extends TestDatabaseSetup {
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.productName").value("Ipod"))
                 .andExpect(jsonPath("$.manufacturer").value("Apple"));
+    }
+
+    @Test
+    public void getProduct_withParameterId_returnsCorrectProduct_withProductImage() throws Exception {
+        mockMvc.perform(get("/product?id=3"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.productName").value("Men's Black Watch"))
+                .andExpect(jsonPath("$.productImage").isNotEmpty());
     }
 
     @Test
@@ -275,6 +285,7 @@ public class ProductControllerIntegrationTest extends TestDatabaseSetup {
                 .productName("Men's Black Watch")
                 .description("A black watch")
                 .manufacturer("IZOD")
+                .productImage(ResourceBundle.getBundle("base64Images").getString("mens_black_watch"))
                 .category(Category.CLOTHING_SHOES_JEWELERY_WATCHES)
                 .price(45.79)
                 .build();

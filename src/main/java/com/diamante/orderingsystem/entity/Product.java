@@ -32,8 +32,8 @@ public class Product implements Serializable {
     @NotNull(message = "Manufacturer is a required field")
     private String manufacturer;
 
-    @Lob
-    private byte[] productImage;
+    @Column(length = 2000000)
+    private String productImage;
 
     @NotNull(message = "Category is a required field")
     @Enumerated(EnumType.STRING)
