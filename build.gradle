@@ -34,6 +34,7 @@ dependencies {
 	implementation "io.springfox:springfox-swagger2:$swaggerVersion"
 	implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
 	implementation "org.postgresql:postgresql:$postgresVersion"
+	implementation "com.github.javafaker:javafaker:1.0.1"
 	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test:5.1.5.RELEASE'

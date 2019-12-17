@@ -30,11 +30,7 @@ docker start postgres-dev
 
 ## Jenkins CI/CD
 
-
 docker run -d -v jenkins_home:/var/jenkins_home --name jenkins -p 8080:8080 -p 50000:50000 jenkins/jenkins:alpine
-
-## GIT HOOKS
-There is pre-commit that will run all tests before pushing.
 
 ## Adding images to database
 
@@ -45,4 +41,8 @@ There is pre-commit that will run all tests before pushing.
 5) Update an existing product by using the following command:
 
         UPDATE products SET product_image='/9j/4AAQSkZJRgABAQEASABIAAD...' WHERE product_id=1; 
+        
+## HEROKU COMMANDS
+
+    heroku logs -a ordering-system-wamazon --tail        
 
