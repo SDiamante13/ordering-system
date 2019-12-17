@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 
 
 @Component
-@Profile("test")
+@Profile("prod")
 @Slf4j
 @Transactional
 public class InitialDataLoader implements CommandLineRunner {
