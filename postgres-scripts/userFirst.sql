@@ -1,0 +1,1 @@
+INSERT INTO public.users (id, password, username) VALUES (1, '{bcrypt}$2a$10$Dd1koXLivLMpFOXbGh6Iv.b7PK8bPJmNmW1qk1Z2qD9440xKKfoYy', 'admin');

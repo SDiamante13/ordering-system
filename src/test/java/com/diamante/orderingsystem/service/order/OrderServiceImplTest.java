@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataRetrievalFailureException;
 
 import java.time.LocalDate;
@@ -19,7 +18,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-@DataJpaTest
 public class OrderServiceImplTest {
 
     @Mock
@@ -132,8 +130,10 @@ public class OrderServiceImplTest {
                 .totalBalance(totalBalance2)
                 .build();
         when(orderRepository.findById(5L)).thenReturn(Optional.empty());
+
         Order actualOrder = orderService.updateOrder(updateOrder);
-        assertThat(actualOrder).isEqualTo(null);
+
+        assertThat(actualOrder).isNull();
     }
 
     @Test(expected = DataRetrievalFailureException.class)
@@ -141,6 +141,7 @@ public class OrderServiceImplTest {
         doThrow(new DataRetrievalFailureException("Nothing")).when(orderRepository).deleteById(5L);
 
         orderService.deleteOrderById(5L);
+
         verify(orderRepository).deleteById(5L);
     }
 
@@ -149,6 +150,7 @@ public class OrderServiceImplTest {
         doNothing().when(orderRepository).deleteById(anyLong());
 
         orderService.deleteOrderById(1L);
+
         verify(orderRepository).deleteById(eq(order1.getOrderId()));
     }
 
@@ -157,12 +159,14 @@ public class OrderServiceImplTest {
         doNothing().when(orderRepository).deleteAllByCustomer_CustomerId(1L);
 
         orderService.deleteAllOrdersForCustomer(1L);
+
         verify(orderRepository).deleteAllByCustomer_CustomerId(eq(1L));
     }
 
     @Test
     public void resetAllOrderIds_callsResetAllOrderIds() {
         orderService.resetAllOrderIds();
+
         verify(orderRepository).resetAllOrderIds();
     }
 

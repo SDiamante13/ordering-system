@@ -1,0 +1,3 @@
+INSERT INTO public.customers (customer_id, first_name, last_name, card_number, expiration_date, security_code, zip_code) VALUES (1, 'Paul', 'Ryan', '1234574638', '11/23', '873', '50892');
+INSERT INTO public.customers (customer_id, first_name, last_name, card_number, expiration_date, security_code, zip_code) VALUES (2, 'Jim', 'Jefferies', '771761728', '12/19', '123', '63781');
+INSERT INTO public.customers (customer_id, first_name, last_name, card_number, expiration_date, security_code, zip_code) VALUES (3, 'George', 'Jefferson', '97244142', '5/18', '782', '60443');
