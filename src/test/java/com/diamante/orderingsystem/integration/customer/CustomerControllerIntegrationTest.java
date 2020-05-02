@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OrderingSystemApplication.class)
-@ActiveProfiles("default")
 public class CustomerControllerIntegrationTest extends TestDatabaseSetup {
 
     @Autowired
@@ -75,14 +74,14 @@ public class CustomerControllerIntegrationTest extends TestDatabaseSetup {
     public void getCustomerByLastName_returnsSingleCustomer() throws Exception {
         mockMvc.perform(get("/customer/{lastName}", "Wright"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.lastName").value("Wright"));
     }
 
     @Test
     public void getCustomerByLastName_returns404NotFoundCustomer() throws Exception {
         mockMvc.perform(get("/customer/{lastName}", "Srikar"))
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType("application/json"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("Customer with last name Srikar not found.")));

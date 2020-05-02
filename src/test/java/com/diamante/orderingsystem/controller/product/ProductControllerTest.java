@@ -1,5 +1,6 @@
 package com.diamante.orderingsystem.controller.product;
 
+import com.diamante.orderingsystem.config.JwtTokenProvider;
 import com.diamante.orderingsystem.entity.Category;
 import com.diamante.orderingsystem.entity.Product;
 import com.diamante.orderingsystem.service.product.ProductService;
@@ -12,10 +13,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
 
@@ -32,15 +35,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(secure = false, value = ProductController.class)
-@ActiveProfiles("default")
+@WebMvcTest(value = ProductController.class)
+@ContextConfiguration
 public class ProductControllerTest {
 
-    @Autowired
     MockMvc mockMvc;
 
     @MockBean
     ProductService productService;
+
+    @MockBean
+    private JwtTokenProvider mockJwtTokenProvider;
+
+    @Autowired
+    private WebApplicationContext context;
 
     @Autowired
     private ObjectMapper mapper;
@@ -56,6 +64,9 @@ public class ProductControllerTest {
     @Before
     public void setUp() throws Exception {
         createProductsForTesting();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
     }
 
     @Test

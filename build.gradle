@@ -1,9 +1,10 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.6.RELEASE'
+		springBootVersion = '2.2.6.RELEASE'
 		swaggerVersion = '2.6.1'
 		postgresVersion = '42.2.5'
 		springSecurityJwtVersion = '1.0.10.RELEASE'
+		lombokVersion = '1.18.12'
 	}
 	repositories {
 		mavenCentral()
@@ -35,9 +36,11 @@ dependencies {
 	implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
 	implementation "org.postgresql:postgresql:$postgresVersion"
 	implementation "com.github.javafaker:javafaker:1.0.1"
-	compileOnly 'org.projectlombok:lombok'
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+	testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test:5.1.5.RELEASE'
+	testImplementation 'org.springframework.security:spring-security-test:5.3.1.RELEASE'
 	testImplementation "org.testcontainers:postgresql:1.10.7"
 	testImplementation "org.testcontainers:testcontainers:1.10.7"
 }

@@ -4,6 +4,7 @@ import com.diamante.orderingsystem.config.JwtTokenProvider;
 import com.diamante.orderingsystem.entity.User;
 import com.diamante.orderingsystem.service.security.CustomUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
 
@@ -28,14 +31,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(secure = false, value = AuthController.class)
+@WebMvcTest(value = AuthController.class)
 public class AuthControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper mapper;
+
+    @Autowired
+    private WebApplicationContext context;
 
     @MockBean
     private JwtTokenProvider mockJwtTokenProvider;
@@ -49,6 +54,13 @@ public class AuthControllerTest {
     private String username = "bob123";
     private String password = "f4Q98#bea";
     private String validToken = "eyBVal1dTok3n";
+
+    @Before
+    public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
+    }
 
     @Test
     public void postWithBodyOfValidAuthRequest_shouldReturnAValidJWTToken() throws Exception {

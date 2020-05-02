@@ -1,5 +1,6 @@
 package com.diamante.orderingsystem.controller.order;
 
+import com.diamante.orderingsystem.config.JwtTokenProvider;
 import com.diamante.orderingsystem.entity.*;
 import com.diamante.orderingsystem.service.order.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,8 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -32,17 +35,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(secure = false, value = OrderController.class)
+@WebMvcTest(value = OrderController.class)
 public class OrderControllerTest {
 
-    @Autowired
     MockMvc mockMvc;
 
     @MockBean
     OrderService orderService;
 
+    @MockBean
+    private JwtTokenProvider mockJwtTokenProvider;
+
     @Autowired
     private ObjectMapper mapper;
+
+    @Autowired
+    private WebApplicationContext context;
 
     // region test variables
     private Order order1;
@@ -69,6 +77,9 @@ public class OrderControllerTest {
     @Before
     public void setUp() throws Exception {
         setUpTestStubs();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
     }
 
     @Test
